@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-bs-theme="{{ darkmode }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,13 +33,13 @@
 
                             <!-- Submit Button -->
                             <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-primary btn-lg">Iniciar Sesión</button>
+                                <button type="submit" class="btn btn-primary btn-lg" id="login">Iniciar Sesión</button>
                             </div>
                         </form>
 
                     </div>
                     {% if error %}
-                        <div class="alert alert-danger text-center" role="alert">
+                        <div class="alert alert-danger text-center" role="alert" id="error_login">
                             {{ error }}
                         </div>
                     {% endif %}
