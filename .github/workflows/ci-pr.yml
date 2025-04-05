@@ -4,7 +4,7 @@ on:
     branches: ["main"]
 
 jobs:
-  secret-detection:
+   secret-detection:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -13,8 +13,9 @@ jobs:
       - name: Install necessary packages
         run: |
           pip install git+https://github.com/NASA-AMMOS/slim-detect-secrets.git@exp
+          # This library is used for JSON operations.
           pip install jq
-
+          
       - name: Create an initial .secrets.baseline if .secrets.baseline does not exist
         run: |
           if [ ! -f .secrets.baseline ]; then
@@ -27,29 +28,25 @@ jobs:
             echo "✅ Existing .secrets.baseline file detected. No new baseline file will be created."
           fi
 
-      - uses: actions/checkout@v2
-        with:
-          secrets: ${{ toJSON(secrets) }}
-         
       - name: Scan repository for secrets
         run: |
           cp .secrets.baseline .secrets.new
-          detect-secrets scan --baseline .secrets.new --exclude-files '.secrets.*' --exclude-files '.git*'>>secrets.json
-    
+          detect-secrets scan --exclude-files '.secrets.*' --exclude-files '.git*' > results.json
 
           compare_secrets() { diff <(jq -r '.results | keys[] as $key | "\($key),\(.[$key] | .[] | .hashed_secret)"' "$1" | sort) <(jq -r '.results | keys[] as $key | "\($key),\(.[$key] | .[] | .hashed_secret)"' "$2" | sort) >/dev/null; }
-
-          if ! compare_secrets .secrets.baseline .secrets.new; then
-            echo "⚠️ Attention Required! ⚠️" >&2
-            echo "New secrets have been detected..." >&2
-            exit 1
-          fi{
-          
-      - name: Renombrar archivo de resultados
-        run: mv .secrets.new secrets.json
         
-      - name: Subir secrets.json como artefacto
+          if ! compare_secrets .secrets.baseline results.json; then
+            echo "⚠️ Attention Required! ⚠️" >&2
+            echo "New secrets have been detected in your recent commit. Due to security concerns, we cannot display detailed information here and we cannot proceed until this issue is resolved." >&2
+            echo "" >&2
+            echo "Please download the results.json file to reveal and handle the secrets:" >&2
+            echo "" >&2
+            exit 1
+          fi
+
+      - name: Upload secrets baseline
         uses: actions/upload-artifact@v4
+        if: failure()
         with:
-          name: secrets-detectados
-          path: secrets.json
+          name: results
+          path: results.json
