@@ -1,0 +1,11 @@
+name: Post welcome comment
+on:
+  pull_request:
+    branches: ["main"]
+jobs:
+  build:
+    name: Post welcome comment
+    runs-on: ubuntu-latest
+    steps:
+      - name: detect-secrets Action
+        uses: perryzjc/detect-secrets-action@v1.1.1
