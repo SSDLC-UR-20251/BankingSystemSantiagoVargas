@@ -30,6 +30,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           secrets: ${{ toJSON(secrets) }}
+         
       - name: Scan repository for secrets
         run: |
           cp .secrets.baseline .secrets.new
@@ -41,4 +42,13 @@ jobs:
             echo "⚠️ Attention Required! ⚠️" >&2
             echo "New secrets have been detected..." >&2
             exit 1
-          fi
+          fi{
+          
+      - name: Renombrar archivo de resultados
+        run: mv .secrets.new secrets.json
+        
+      - name: Subir secrets.json como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: secrets-detectados
+          path: secrets.json
