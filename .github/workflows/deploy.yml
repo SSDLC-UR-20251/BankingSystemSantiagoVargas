@@ -18,8 +18,8 @@ jobs:
       
       - name: Build Docker image
         run: |
-          docker build -t ${{ secrets.CR_USERNAME }}/bankingsystem:${{ steps.vars.outputs.sha_short }} .
+          docker build -t ${{ secrets.CR_USERNAME }}/BankingSystemSantiagoVargas:${{ steps.vars.outputs.sha_short }} .
       
       - name: Push Docker image
         run: |
-          docker push ${{ secrets.CR_USERNAME }}/bankingsystem:${{ steps.vars.outputs.sha_short }}
+          docker push ${{ secrets.CR_USERNAME }}/BankingSystemSantiagoVargas:${{ steps.vars.outputs.sha_short }}
