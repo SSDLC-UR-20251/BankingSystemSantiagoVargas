@@ -12,17 +12,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Log in to GitHub Container Registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
-      - name: Extract short SHA
-        id: vars
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
-
+      # DockerHub
+      - name: Log in to DockerHub
+        run: echo "${{ secrets.CR_PAT }}" | docker login -u "${{ secrets.CR_USERNAME }}" --password-stdin
+      
       - name: Build Docker image
         run: |
-          docker build -t ghcr.io/${{ github.repository }}:${{ steps.vars.outputs.sha_short }} .
-
+          docker build -t ${{ secrets.CR_USERNAME }}/bankingsystem:${{ steps.vars.outputs.sha_short }} .
+      
       - name: Push Docker image
         run: |
-          docker push ghcr.io/${{ github.repository }}:${{ steps.vars.outputs.sha_short }}
+          docker push ${{ secrets.CR_USERNAME }}/bankingsystem:${{ steps.vars.outputs.sha_short }}
