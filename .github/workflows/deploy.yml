@@ -1,25 +1,27 @@
-name: Deploy to Container Registry
+name: Deploy Docker image
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
 
 jobs:
-  docker-build-and-push:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      # DockerHub
-      - name: Log in to DockerHub
+      - name: Log in to Docker Hub
         run: echo "${{ secrets.CR_PAT }}" | docker login -u "${{ secrets.CR_USERNAME }}" --password-stdin
-      
+
+      - name: Set Docker image tag
+        id: vars
+        run: echo "IMAGE_TAG=${{ secrets.CR_USERNAME }}/bankingsystem:${{ github.sha }}" >> $GITHUB_ENV
+
       - name: Build Docker image
-        run: |
-          docker build -t ${{ secrets.CR_USERNAME }}/bankingsystem:${{ steps.vars.outputs.sha_short }} .
-      
-      - name: Push Docker image
-        run: |
-          docker push ${{ secrets.CR_USERNAME }}/bankingsystem:${{ steps.vars.outputs.sha_short }}
+        run: docker build -t ${{ env.IMAGE_TAG }} .
+
+      - name: Push Docker image to Docker Hub
+        run: docker push ${{ env.IMAGE_TAG }}
