@@ -1,0 +1,11 @@
+name: Test DockerHub Login
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-login:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Docker login with secrets
+        run: echo "${{ secrets.CR_PAT }}" | docker login -u "${{ secrets.CR_USERNAME }}" --password-stdin
