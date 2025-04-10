@@ -1,0 +1,25 @@
+name: Deploy to Container Registry
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  docker-build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # DockerHub
+      - name: Log in to DockerHub
+        run: echo "${{ secrets.CR_PAT }}" | docker login -u "${{ secrets.CR_USERNAME }}" --password-stdin
+      
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ secrets.CR_USERNAME }}/BankingSystemSantiagoVargas:${{ steps.vars.outputs.sha_short }} .
+      
+      - name: Push Docker image
+        run: |
+          docker push ${{ secrets.CR_USERNAME }}/BankingSystemSantiagoVargas:${{ steps.vars.outputs.sha_short }}

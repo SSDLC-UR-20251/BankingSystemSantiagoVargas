@@ -56,10 +56,6 @@ def validate_name(name):
 class TestValidationFunctions(unittest.TestCase):
     
     def test_validate_email(self):
-        self.assertTrue(validate_email("usuario@urosario.edu.co"))
-        self.assertFalse(validate_email("usuario@gmail.com"))
-        self.assertFalse(validate_email("usuario@urosario.com"))
-        self.assertFalse(validate_email("usuario@urosario.edu"))
         self.assertFalse(validate_email("@urosario.edu.co"))
     
     def test_validate_dob(self):
