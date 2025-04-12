@@ -1,4 +1,5 @@
-# 💻 Desarrollo Seguro en Aplicaciones Bancarias
+
+# 📌 Laboratorio: Validacion y Actualización de Usuarios en Flask  
 
 ## 🏛 Universidad del Rosario - 2025 - 1
 

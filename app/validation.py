@@ -2,6 +2,7 @@ from _datetime import datetime
 import re
 
 import unicodedata
+import unittest
 
 
 def normalize_input(data):
