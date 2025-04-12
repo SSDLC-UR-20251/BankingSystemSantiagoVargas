@@ -15,7 +15,7 @@ def safe_connect():
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 """
-@Desc   ：Log Injection
+#@Desc   ：Log Injection
 """
 from flask import Flask
 from flask import request
