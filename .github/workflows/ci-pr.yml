@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
 
       - name: Install necessary packages
         run: |
@@ -69,7 +69,7 @@ jobs:
     
         steps:
           # Fetch project source with GitHub Actions Checkout. Use either v3 or v4.
-          - uses: actions/checkout@v4
+          - uses: actions/checkout@v6
           # Run the "semgrep ci" command on the command line of the docker image.
           - run: semgrep ci --pro
             env:
@@ -82,7 +82,7 @@ jobs:
         name: SonarQube
         runs-on: ubuntu-latest
         steps:
-          - uses: actions/checkout@v4
+          - uses: actions/checkout@v6
             with:
               fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
           - name: SonarQube Scan
